@@ -1,28 +1,39 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div class="container">
+      <Button
+        v-for="category in allCategories"
+        :key="category.id"
+        v-bind:title=category
+      />
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Button from './components/Button.vue'
+
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    Button
+  },
+  methods: {
+    ...mapActions(['fetchCategories'])
+  },
+  computed: mapGetters(['allCategories']),
+  created() {
+    this.fetchCategories();
   }
 }
 </script>
 
 <style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+.container {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 24px;
 }
 </style>
