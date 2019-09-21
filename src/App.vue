@@ -5,15 +5,41 @@
         v-for="category in allCategories"
         :key="category.id"
         v-bind:title=category
+        @click.native="fetchJokes(category)"
       />
+      <div>
+        <p
+          v-for="joke in allJokes"
+          :key="joke.id"
+          @click="joke.favorite ?  '' : addFavorite({ id: joke.id, value: joke.value}); joke.favorite=true"
+        >
+          {{ joke.value }}
+        </p>
+      </div>
+      <div>
+        <p
+          v-for="joke in allFavorites"
+          :key="joke.id"
+        >
+          {{ joke.value }}
+        </p>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import Button from './components/Button.vue'
+import Vue from 'vue';
+import BootstrapVue from 'bootstrap-vue';
+
+import Button from './components/Button.vue';
 
 import { mapGetters, mapActions } from 'vuex';
+
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+
+Vue.use(BootstrapVue);
 
 export default {
   name: 'app',
@@ -21,9 +47,9 @@ export default {
     Button
   },
   methods: {
-    ...mapActions(['fetchCategories'])
+    ...mapActions(['fetchCategories', 'fetchJokes', 'addFavorite']),
   },
-  computed: mapGetters(['allCategories']),
+  computed: mapGetters(['allCategories', 'allJokes', 'allFavorites']),
   created() {
     this.fetchCategories();
   }
